@@ -16,6 +16,7 @@ public:
     void topo_sort();
     void dfs_visit(int,bool*);
     void printGraph();
+    int countComponents();
 private:
     std::vector<std::vector<int>> adj;
     int size;
@@ -115,16 +116,35 @@ void Graph::bfs(int s) {
     }
 }
 
+int Graph::countComponents() {
+    int res = 0;
+
+    bool *visited = new bool[size];
+
+    for (int i = 0; i < size; i++)
+        visited[i] = false;
+
+    for(int i = 0; i < size; i++) {
+        if (!visited[i]) {
+
+            res++;
+            visited[i] = true;
+            dfs_visit(i,visited);
+        }
+    }
+
+    return res;
+}
+
 main() {
     Graph graph = Graph(5);
-    graph.insert(0,4);
     graph.insert(0,1);
-    graph.insert(2,3);
-    graph.insert(1,3);
-    graph.insert(4,2);
-    /* graph.topo_sort(); */
+    graph.insert(0,4);
+    graph.insert(1,4);
+    graph.topo_sort();
+    std::cout << graph.countComponents();
     /* graph.printGraph(); */
     /* graph.bfs(0); */
-    graph.dfs();
+    /* graph.dfs(); */
 }
 
